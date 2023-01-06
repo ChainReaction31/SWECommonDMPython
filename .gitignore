@@ -1,2 +1,8 @@
 
 __pycache__/
+
+.idea/
+
+dist/
+
+py_osh_data_core.egg-info/
