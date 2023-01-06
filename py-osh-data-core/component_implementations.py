@@ -1,6 +1,6 @@
 import time
 
-from datamodels.datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
+from datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
 
 
 class BooleanComponent(DataComponentImpl):

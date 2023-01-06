@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py_osh_data_core"
+version = "0.0.1"
+authors = [
+    { name = "Ian Patterson", email = "ian@botts-inc.com" }
+]
+description = """A small package meant to follow the SWE Common Data Model to enable development of a Connected Services
+API and other services in the Python language."""
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://opensensorhub.org/"
