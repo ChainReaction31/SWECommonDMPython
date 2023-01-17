@@ -6,3 +6,7 @@ __pycache__/
 dist/
 
 py_osh_data_core.egg-info/
+
+oshdatacore.egg-info/
+
+build/

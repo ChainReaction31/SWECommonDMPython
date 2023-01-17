@@ -3,7 +3,7 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py_osh_data_core"
+name = "oshdatacore"
 version = "0.0.1"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }

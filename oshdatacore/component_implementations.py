@@ -172,6 +172,12 @@ class DataRecordComponent(DataComponentImpl):
 
         return schema_dict
 
+    def get_fields(self):
+        return self.fields
+
+    def get_num_fields(self):
+        return len(self.fields)
+
 
 class VectorComponent(DataComponentImpl):
     referenceFrame: str
