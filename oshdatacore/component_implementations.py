@@ -9,33 +9,36 @@ class BooleanComponent(DataComponentImpl):
     """
     The “Boolean” class is used to specify a scalar data component with a Boolean
     representation
+
+    Attributes:
+        name: The name of the component
+        label: A human-readable label for the component
+        definition: A URI that identifies the ontological definition of the component
+        description: A description of the component
+        value: The latest value of the component
+        type: SWEDataTypes.BOOLEAN
     """
     value: bool = None
-    type: str = SWEDataTypes.BOOLEAN.value
-
-    # def __int__(self, name, label, definition, description=None):
-    #     self.name = name
-    #     self.label = label
-    #     self.definition = definition
-    #     self.description = description
-    #     self.type = SWEDataTypes.BOOLEAN
+    type: str = SWEDataTypes.BOOLEAN
 
 
+@dataclass(kw_only=True)
 class TextComponent(DataComponentImpl):
     """
     The “Text” class is used to specify a component with a textual representation
-    """
-    constraint: AllowedTokens
-    value: str
-    type = SWEDataTypes.TEXT
 
-    def __init__(self, name, label, definition, description=None, constraint=None):
-        self.name = name
-        self.type = SWEDataTypes.TEXT
-        self.constraint = constraint
-        self.label = label
-        self.definition = definition
-        self.description = description
+    Attributes:
+        name: The name of the component
+        label: A human-readable label for the component
+        definition: A URI that identifies the ontological definition of the component
+        description: A description of the component
+        constraint: limits the set of valid values
+        value: The latest value of the component
+        type: SWEDataTypes.TEXT
+    """
+    constraint: AllowedTokens = None
+    value: str = None
+    type = SWEDataTypes.TEXT
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -46,29 +49,26 @@ class TextComponent(DataComponentImpl):
         return schema_dict
 
 
+@dataclass(kw_only=True)
 class CategoryComponent(DataComponentImpl):
+    """
+    The “Category” class is used to specify a scalar data component with a categorical
+    representation
 
-    def __init__(self, name, label, definition, description=None, constraint=None):
-        """
-        The “Category” class is used to specify a scalar data component with a categorical
-        representation
-        :param name: The name of the component
-        :param label: A human-readable label for the component
-        :param definition: A URI that identifies the ontological definition of the component
-        :param description: A description of the component
-        :param codespace: dictionary listing and defining all possible values of the component. It is expected that the
-        dictionary be referenced rather than included inline
-        :param constraint: limits the set of valid values
-        :param value: The latest value of the component
-        """
-        self.name: str = name
-        self.type: str = SWEDataTypes.CATEGORY
-        self.label: str = label
-        self.definition: str = definition
-        self.description: str = description
-        self.codespace: dict = None
-        self.constraint: AllowedTokens = constraint
-        self.value: str = None
+    Attributes:
+        name: The name of the component
+        label: A human-readable label for the component
+        definition: A URI that identifies the ontological definition of the component
+        description: A description of the component
+        codespace: dictionary listing and defining all possible values of the component. It is expected that the
+            dictionary be referenced rather than included inline
+        constraint: limits the set of valid values
+        value: The latest value of the component
+    """
+    codespace: dict = None
+    constraint: AllowedTokens = None
+    type = SWEDataTypes.CATEGORY
+    value: str = None
 
     def set_allowed_values(self, allowed_values: AllowedTokens):
         self.constraint = allowed_values
@@ -77,19 +77,16 @@ class CategoryComponent(DataComponentImpl):
         self.constraint.add_allowed_value(allowed_value)
 
 
+@dataclass(kw_only=True)
 class CountComponent(DataComponentImpl):
     """
     The “Count” class is used to specify a scalar data component with a discrete countable
     representation
     """
 
-    def __init__(self, name, label, definition, description=None, constraint=None):
-        self.name = name
-        self.label = label
-        self.definition = definition
-        self.description = description
-        self.type = SWEDataTypes.QUANTITY
-        self.constraint = constraint
+    type = SWEDataTypes.COUNT
+    constraint: AllowedValues = None
+    value: int = None
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -106,24 +103,16 @@ class CountComponent(DataComponentImpl):
         self.constraint.add_allowed_value(allowed_value)
 
 
+@dataclass(kw_only=True)
 class QuantityComponent(DataComponentImpl):
     """
     The “Quantity” class is used to specify a component with a continuous numerical
     representation
     """
-    uom: str
-    constraint: AllowedValues
-    value: float
+    uom: str = None
+    constraint: AllowedValues = None
+    value: float = None
     type = SWEDataTypes.QUANTITY
-
-    def __init__(self, name, label, definition, uom=None, description=None, constraint=None):
-        self.name = name
-        self.type = SWEDataTypes.QUANTITY
-        self.uom = uom
-        self.constraint = constraint
-        self.label = label
-        self.definition = definition
-        self.description = description
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -143,30 +132,21 @@ class QuantityComponent(DataComponentImpl):
         self.constraint.add_allowed_value(allowed_value)
 
 
+@dataclass(kw_only=True)
 class TimeComponent(DataComponentImpl):
     """
     The “Time” class is used to specify a component with a date-time representation and
     whose value is projected along the axis of a temporal reference frame. This class is also
     necessary to specify that a time value is expressed in a calendar system.
     """
-    reference_time: int
-    local_frame: int
-    uom: str
-    constraint: AllowedValues
-    value: float
-    type = SWEDataTypes.TIME
 
-    def __init__(self, name, label, definition='http://www.opengis.net/def/property/OGC/0/SamplingTime',
-                 description=None, constraint=None,
-                 uom='http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'):
-        self.local_frame = time.gmtime(0)
-        self.uom = uom
-        self.name = name
-        self.type = SWEDataTypes.TIME
-        self.constraint = constraint
-        self.label = label
-        self.definition = definition
-        self.description = description
+    definition: str = 'http://www.opengis.net/def/property/OGC/0/SamplingTime'
+    reference_time: int = None
+    local_frame: int = time.gmtime(0)
+    uom: str = 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
+    constraint: AllowedValues = None
+    value: float = None
+    type = SWEDataTypes.TIME
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
