@@ -22,8 +22,17 @@ class SWEDataTypes(Enum):
 
 
 class AllowedTokens:
-    value: list[str]
-    pattern: str
+
+    def __init__(self, value: list[str] = None, pattern: str = None):
+        """
+        This class allows defining the constraint either by enumerating a list of allowed values by
+        using one or more “value” attributes and/or by specifying a pattern that the value must
+        match. The value must then either be one of the enumerated tokens or match the pattern.
+        :param value: A list of allowed values
+        :param pattern: A regular expression that the value must match
+        """
+        self.value: set[str] = value
+        self.pattern: str = pattern
 
     def datastructure_to_dict(self):
         schema_dict = dict()
@@ -34,11 +43,32 @@ class AllowedTokens:
 
         return schema_dict
 
+    def add_value(self, value: str):
+        if value is not None:
+            self.value.add(value)
+        return self.value
+
+    def remove_value(self, value: str):
+        if self.value is not None:
+            self.value.discard(value)
+        return self.value
+
 
 class AllowedValues:
-    value: Real
-    interval: range
-    significantFigures: int
+
+    def __init__(self, value: list[Real] = None, interval: range = None, significant_figures: int = None):
+        """
+        This class allows defining the constraint either by enumerating a list of allowed values by
+        using one or more “value” attributes and/or by specifying a pattern that the value must
+        match. The value must then either be one of the enumerated tokens or match the pattern.
+        :param value: A list of allowed real number values
+        :param interval: A range of allowed real number values
+        :param significant_figures: Limits the total number of digits included in the represented number.
+        Only applies to decimals
+        """
+        self.value: set[Real] = value
+        self.interval: range = interval
+        self.significant_figures: int = significant_figures
 
     def datastructure_to_dict(self):
         schema_dict = dict()
@@ -46,10 +76,20 @@ class AllowedValues:
             schema_dict['value'] = self.value
         if self.interval is not None:
             schema_dict['interval'] = self.interval
-        if self.significantFigures is not None:
-            schema_dict['significantFigures'] = self.significantFigures
+        if self.significant_figures is not None:
+            schema_dict['significantFigures'] = self.significant_figures
 
         return schema_dict
+
+    def add_value(self, value: Real):
+        if value is not None:
+            self.value.add(value)
+        return self.value
+
+    def remove_value(self, value: Real):
+        if self.value is not None:
+            self.value.discard(value)
+        return self.value
 
 
 @dataclass

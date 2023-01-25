@@ -45,9 +45,34 @@ class TextComponent(DataComponentImpl):
 
 
 class CategoryComponent(DataComponentImpl):
-    """
-    Unimplemented
-    """
+
+    def __init__(self, name, label, definition, description=None, constraint=None):
+        """
+        The “Category” class is used to specify a scalar data component with a categorical
+        representation
+        :param name: The name of the component
+        :param label: A human-readable label for the component
+        :param definition: A URI that identifies the ontological definition of the component
+        :param description: A description of the component
+        :param codespace: dictionary listing and defining all possible values of the component. It is expected that the
+        dictionary be referenced rather than included inline
+        :param constraint: limits the set of valid values
+        :param value: The latest value of the component
+        """
+        self.name: str = name
+        self.type: str = SWEDataTypes.CATEGORY
+        self.label: str = label
+        self.definition: str = definition
+        self.description: str = description
+        self.codespace: dict = None
+        self.constraint: AllowedTokens = constraint
+        self.value: str = None
+
+    def set_allowed_values(self, allowed_values: AllowedTokens):
+        self.constraint = allowed_values
+
+    def add_allowed_value(self, allowed_value: str):
+        self.constraint.add_allowed_value(allowed_value)
 
 
 class CountComponent(DataComponentImpl):
@@ -55,17 +80,14 @@ class CountComponent(DataComponentImpl):
     The “Count” class is used to specify a scalar data component with a discrete countable
     representation
     """
-    constraint: AllowedValues
-    value: int
-    type = SWEDataTypes.QUANTITY
 
     def __init__(self, name, label, definition, description=None, constraint=None):
         self.name = name
-        self.type = SWEDataTypes.QUANTITY
-        self.constraint = constraint
         self.label = label
         self.definition = definition
         self.description = description
+        self.type = SWEDataTypes.QUANTITY
+        self.constraint = constraint
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -74,6 +96,12 @@ class CountComponent(DataComponentImpl):
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
 
         return schema_dict
+
+    def set_allowed_values(self, allowed_values: AllowedValues):
+        self.constraint = allowed_values
+
+    def add_allowed_value(self, allowed_value: int):
+        self.constraint.add_allowed_value(allowed_value)
 
 
 class QuantityComponent(DataComponentImpl):
@@ -105,6 +133,12 @@ class QuantityComponent(DataComponentImpl):
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
 
         return schema_dict
+
+    def set_allowed_values(self, allowed_values: AllowedValues):
+        self.constraint = allowed_values
+
+    def add_allowed_value(self, allowed_value: int):
+        self.constraint.add_allowed_value(allowed_value)
 
 
 class TimeComponent(DataComponentImpl):

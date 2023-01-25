@@ -1,3 +1,4 @@
+from abc import ABC
 from enum import Enum
 
 
@@ -11,7 +12,11 @@ class ByteOrder(Enum):
     LITTLE_ENDIAN = 'littleEndian'
 
 
-class TextEncoding:
+class AbstractEncoding(ABC):
+    type_name: str
+
+
+class TextEncoding(AbstractEncoding):
     """
     The “TextEncoding” class defines a method allowing encoding arbitrarily complex data
     using a text based delimiter separated values (DSV) format. -  OGC 08-094r1 pg. 59
@@ -29,7 +34,7 @@ class TextEncoding:
         self.collapse_white_spaces = collapse_white_space
 
 
-class BinaryEncoding:
+class BinaryEncoding(AbstractEncoding):
     """
     The “BinaryEncoding” class defines a method that allows encoding complex structured
     data using primitive data types encoded directly at the byte level, in the same way that
