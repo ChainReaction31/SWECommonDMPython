@@ -23,7 +23,7 @@ class SWEDataTypes(Enum):
 
 class AllowedTokens:
 
-    def __init__(self, value: list[str] = None, pattern: str = None):
+    def __init__(self, value: set[str] = None, pattern: str = None):
         """
         This class allows defining the constraint either by enumerating a list of allowed values by
         using one or more “value” attributes and/or by specifying a pattern that the value must
@@ -56,7 +56,7 @@ class AllowedTokens:
 
 class AllowedValues:
 
-    def __init__(self, value: list[Real] = None, interval: range = None, significant_figures: int = None):
+    def __init__(self, value: set[Real] = None, interval: range = None, significant_figures: int = None):
         """
         This class allows defining the constraint either by enumerating a list of allowed values by
         using one or more “value” attributes and/or by specifying a pattern that the value must
@@ -92,23 +92,23 @@ class AllowedValues:
         return self.value
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SWEImpl:
     """
         This class should not be instantiated, just inherited from
     """
-    extension: str
+    extension: str = None
     """
         The “extension” attribute is used as a container for future extensions.
     """
 
 
-@dataclass
+@dataclass(kw_only=True)
 class SweIdentifiableImpl(SWEImpl):
     """
         This class should not be instantiated, just inherited from
     """
-    identifier: str
+    identifier: str = None
     """
         The optional “identifier” attribute allows assigning a unique identifier to the component,
         so that it can be referenced later on. It can be used, for example, when defining the
@@ -124,7 +124,7 @@ class SweIdentifiableImpl(SWEImpl):
     """
 
 
-@dataclass
+@dataclass(kw_only=True)
 class DataComponentImpl(SweIdentifiableImpl):
     """
         This class should not be instantiated, just inherited from
@@ -142,13 +142,13 @@ class DataComponentImpl(SweIdentifiableImpl):
         eventually illustrated by pictures and diagrams as well as additional semantic information
         such as relationships to units and other concepts, ontological mappings, etc.
     """
-    optional: True
+    optional: bool = False
     """
         The “optional” attribute is an optional flag indicating if the component value can be
         omitted in the data stream. It is only meaningful if the component is used as a schema
         descriptor (i.e. not for a component containing an inline value). It is ‘false’ by default.
     """
-    updatable: True
+    updatable: bool = False
     """
         The “updatable” attribute is an optional flag indicating if the component value is fixed or
         can be updated. It is only applicable if the data component is used to define the input of a
@@ -159,7 +159,6 @@ class DataComponentImpl(SweIdentifiableImpl):
     def datastructure_to_dict(self):
         schema_dict = dict([
             ('name', self.name),
-            ('type', self.type.value),
             ('label', self.label),
             ('definition', self.definition),
             ('description', self.description)

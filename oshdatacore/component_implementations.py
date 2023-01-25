@@ -1,22 +1,24 @@
 import time
+from dataclasses import dataclass
 
-from datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
+from oshdatacore.datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
 
 
+@dataclass(kw_only=True)
 class BooleanComponent(DataComponentImpl):
     """
     The “Boolean” class is used to specify a scalar data component with a Boolean
     representation
     """
-    value: bool
-    type: SWEDataTypes.BOOLEAN
+    value: bool = None
+    type: str = SWEDataTypes.BOOLEAN.value
 
-    def __int__(self, name, label, definition, description=None):
-        self.name = name
-        self.label = label
-        self.definition = definition
-        self.description = description
-        self.type = SWEDataTypes.BOOLEAN
+    # def __int__(self, name, label, definition, description=None):
+    #     self.name = name
+    #     self.label = label
+    #     self.definition = definition
+    #     self.description = description
+    #     self.type = SWEDataTypes.BOOLEAN
 
 
 class TextComponent(DataComponentImpl):
