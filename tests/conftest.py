@@ -1,7 +1,7 @@
 import pytest
 
 from oshdatacore.component_implementations import BooleanComponent, TextComponent, CategoryComponent, CountComponent, \
-    QuantityComponent, TimeComponent
+    QuantityComponent, TimeComponent, DataRecordComponent
 
 
 @pytest.fixture
@@ -42,4 +42,11 @@ def test_quantity_comp():
 @pytest.fixture
 def test_time_comp():
     comp = TimeComponent(name='test-time', label='Test Time', description='Test Description')
+    return comp
+
+
+@pytest.fixture
+def test_datarecord():
+    comp = DataRecordComponent(name='test-datarecord', label='Test DataRecord', description='Test Description',
+                               definition='www.test.org/test/datarecord')
     return comp

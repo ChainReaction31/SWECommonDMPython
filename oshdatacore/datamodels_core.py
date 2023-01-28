@@ -12,10 +12,10 @@ class SWEDataTypes(Enum):
     """
     BOOLEAN = 'Boolean'
     TEXT = 'Text'
-    CATEGORY = 'Category',
+    CATEGORY = 'Category'
     COUNT = 'Count'
     QUANTITY = 'Quantity'
-    TIME = 'Time',
+    TIME = 'Time'
     DATA_RECORD = 'DataRecord'
     VECTOR = 'Vector'
     DATA_ARRAY = 'DataArray'
@@ -118,7 +118,7 @@ class SweIdentifiableImpl(SWEImpl):
     """
         The label attribute is meant to hold a short, descriptive name
     """
-    description: str
+    description: str = ''
     """
        Description can carry any length of plain text 
     """
@@ -155,10 +155,12 @@ class DataComponentImpl(SweIdentifiableImpl):
         process (i.e. when used to define the input or parameter of a service, process or sensor,
         but not when used to define the content of a dataset).
     """
+    type: SWEDataTypes = None
 
     def datastructure_to_dict(self):
         schema_dict = dict([
             ('name', self.name),
+            ('type', self.type.value),
             ('label', self.label),
             ('definition', self.definition),
             ('description', self.description)

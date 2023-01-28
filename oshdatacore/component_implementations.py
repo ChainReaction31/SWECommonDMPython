@@ -1,5 +1,5 @@
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from oshdatacore.datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
 
@@ -19,7 +19,7 @@ class BooleanComponent(DataComponentImpl):
         type: SWEDataTypes.BOOLEAN
     """
     value: bool = None
-    type: str = SWEDataTypes.BOOLEAN
+    type: SWEDataTypes = SWEDataTypes.BOOLEAN
 
 
 @dataclass(kw_only=True)
@@ -38,7 +38,7 @@ class TextComponent(DataComponentImpl):
     """
     constraint: AllowedTokens = None
     value: str = None
-    type = SWEDataTypes.TEXT
+    type: SWEDataTypes = SWEDataTypes.TEXT
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -67,7 +67,7 @@ class CategoryComponent(DataComponentImpl):
     """
     codespace: dict = None
     constraint: AllowedTokens = None
-    type = SWEDataTypes.CATEGORY
+    type: SWEDataTypes = SWEDataTypes.CATEGORY
     value: str = None
 
     def set_allowed_values(self, allowed_values: AllowedTokens):
@@ -84,7 +84,7 @@ class CountComponent(DataComponentImpl):
     representation
     """
 
-    type = SWEDataTypes.COUNT
+    type: SWEDataTypes = SWEDataTypes.COUNT
     constraint: AllowedValues = None
     value: int = None
 
@@ -112,7 +112,7 @@ class QuantityComponent(DataComponentImpl):
     uom: str = None
     constraint: AllowedValues = None
     value: float = None
-    type = SWEDataTypes.QUANTITY
+    type: SWEDataTypes = SWEDataTypes.QUANTITY
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -146,7 +146,7 @@ class TimeComponent(DataComponentImpl):
     uom: str = 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
     constraint: AllowedValues = None
     value: float = None
-    type = SWEDataTypes.TIME
+    type: SWEDataTypes = SWEDataTypes.TIME
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -161,16 +161,19 @@ class TimeComponent(DataComponentImpl):
 
 
 # Record Components
-class DataRecordComponent(DataComponentImpl):
-    fields: list = []
 
-    def __init__(self, name, label, definition, description=None):
-        self.name = name
-        self.label = label
-        self.definition = definition
-        self.description = description
-        self.type = SWEDataTypes.DATA_RECORD
-        self.fields = []
+@dataclass(kw_only=True)
+class DataRecordComponent(DataComponentImpl):
+    type: SWEDataTypes = SWEDataTypes.DATA_RECORD
+    fields: list[DataComponentImpl] = field(default_factory=list)
+
+    # def __init__(self, name, label, definition, description=None):
+    #     self.name = name
+    #     self.label = label
+    #     self.definition = definition
+    #     self.description = description
+    #     self.type = SWEDataTypes.DATA_RECORD
+    #     self.fields = []
 
     def add_field(self, field):
         if issubclass(type(field), DataComponentImpl):

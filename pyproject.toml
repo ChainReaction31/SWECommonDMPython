@@ -4,12 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "oshdatacore"
-version = "0.0.1-alpha.3"
+version = "0.0.1-alpha.10"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
-description = """A small package meant to follow the SWE Common Data Model to enable development of a Connected Systems
-API and other services in the Python language."""
+description = """A SWE Common Data Model representation in Python"""
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
