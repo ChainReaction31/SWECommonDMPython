@@ -197,6 +197,19 @@ class DataRecordComponent(DataComponentImpl):
     def get_num_fields(self):
         return len(self.fields)
 
+    def flat_id_to_field_map(self):
+        """
+        Returns a dictionary mapping the UUID of each field to the field itself.
+        :return:
+        """
+        field_map = {}
+        for f in self.fields:
+            if isinstance(f, DataRecordComponent):
+                field_map.update(f.flat_id_to_field_map())
+            else:
+                field_map[f.get_uuid()] = f
+        return field_map
+
 
 class VectorComponent(DataComponentImpl):
     referenceFrame: str

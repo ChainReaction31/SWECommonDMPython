@@ -1,6 +1,8 @@
-from dataclasses import dataclass
+import uuid
+from dataclasses import dataclass, field
 from enum import Enum
 from numbers import Real
+from uuid import UUID
 
 
 class SWEDataTypes(Enum):
@@ -156,6 +158,17 @@ class DataComponentImpl(SweIdentifiableImpl):
         but not when used to define the content of a dataset).
     """
     type: SWEDataTypes = None
+    """
+        The “type” attribute is used to specify the component type. It is mandatory for all class that inherit from 
+        DataComponentImpl to use a default value for this attribute. 
+    """
+    # __uuid: UUID = uuid.uuid4()
+    __uuid: UUID = field(default_factory=uuid.uuid4, init=False)
+    """
+    Used to uniquely identify components. This field should not be set by the user, it is automatically generated.
+    Not part of the OGC specification. It is provided to help other libraries identify specific implementations of
+    components.
+    """
 
     def datastructure_to_dict(self):
         schema_dict = dict([
@@ -166,6 +179,9 @@ class DataComponentImpl(SweIdentifiableImpl):
             ('description', self.description)
         ])
         return schema_dict
+
+    def get_uuid(self):
+        return self.__uuid
 
 
 """ Basic Data Types:

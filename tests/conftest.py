@@ -46,7 +46,7 @@ def test_time_comp():
 
 
 @pytest.fixture
-def test_datarecord():
+def test_comp_datarecord():
     comp = DataRecordComponent(name='test-datarecord', label='Test DataRecord', description='Test Description',
                                definition='www.test.org/test/datarecord')
     return comp

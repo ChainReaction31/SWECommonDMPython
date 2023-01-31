@@ -82,8 +82,8 @@ def test_time_component(test_time_comp):
     assert comp.local_frame == time.gmtime(0)
 
 
-def test_datarecord_component(test_datarecord):
-    comp = test_datarecord
+def test_datarecord_component(test_comp_datarecord):
+    comp = test_comp_datarecord
     assert comp.name == 'test-datarecord'
     assert comp.label == 'Test DataRecord'
     assert comp.definition == 'www.test.org/test/datarecord'
