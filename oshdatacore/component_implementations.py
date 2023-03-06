@@ -271,13 +271,17 @@ class DataArrayComponent(DataComponentImpl):
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
-        schema_dict['elementType'] = self.element_type.datastructure_to_dict()
-        schema_dict['elementCount'] = self.element_count.datastructure_to_dict()
 
-        value_dicts = []
-        for value in self.values:
-            value_dicts.append(value.datastructure_to_dict())
-
-        schema_dict['values'] = value_dicts
+        schema_dict['elementCount'] = {
+            'type': self.element_count.type.value,
+            'definition': self.element_count.definition,
+            'value': self.element_count.value,
+        }
+        schema_dict['elementType'] = {
+            'name': self.element_type.label,
+            'type': self.element_type.type.value,
+            'definition': self.element_type.definition,
+            'description': self.element_type.description,
+        }
 
         return schema_dict

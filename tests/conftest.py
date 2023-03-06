@@ -1,7 +1,7 @@
 import pytest
 
 from oshdatacore.component_implementations import BooleanComponent, TextComponent, CategoryComponent, CountComponent, \
-    QuantityComponent, TimeComponent, DataRecordComponent, VectorComponent
+    QuantityComponent, TimeComponent, DataRecordComponent, VectorComponent, DataArrayComponent
 
 
 @pytest.fixture
@@ -64,4 +64,18 @@ def test_comp_vector():
     comp.add_coord('Lon', lon)
     comp.add_coord('Alt', alt)
 
+    return comp
+
+
+@pytest.fixture
+def test_comp_data_array():
+    comp = DataArrayComponent(name='test-data-array', label='Test DataArray', description='Test Description',
+                              definition='www.test.org/test/data-array',
+                              element_type=QuantityComponent(name='array-element',
+                                                             label='Array Element',
+                                                             definition='www.test.org/test/array-element-qty'),
+                              element_count=CountComponent(name='array-count',
+                                                           label='Array Count',
+                                                           definition='www.test.org/test/array-count',
+                                                           value=3))
     return comp
