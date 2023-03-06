@@ -118,7 +118,7 @@ class QuantityComponent(DataComponentImpl):
         schema_dict = super().datastructure_to_dict()
 
         if self.uom is not None:
-            schema_dict['uom'] = self.uom
+            schema_dict['uom'] = {'code': self.uom}
 
         if self.constraint is not None:
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
@@ -152,7 +152,7 @@ class TimeComponent(DataComponentImpl):
         schema_dict = super().datastructure_to_dict()
 
         if self.uom is not None:
-            schema_dict['uom'] = self.uom
+            schema_dict['uom'] = {'code': self.uom}
 
         if self.constraint is not None:
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
@@ -214,20 +214,20 @@ class DataRecordComponent(DataComponentImpl):
 class VectorComponent(DataComponentImpl):
     referenceFrame: str
     localFrame: str
-    coordinates: list[DataComponentImpl]
+    coordinates: dict[DataComponentImpl]
     type = SWEDataTypes.VECTOR
 
-    def __init__(self, name, label, definition, description=None, reference_frame=None, local_frame=None):
+    def __init__(self, name, label, definition, reference_frame, local_frame, description=None):
         self.name = name
         self.label = label
         self.referenceFrame = reference_frame
         self.localFrame = local_frame
-        self.coordinates = []
+        self.coordinates = {}
         self.definition = definition
         self.description = description
 
-    def add_coord(self, coordinate):
-        self.coordinates.append(coordinate)
+    def add_coord(self, axis_id: str, coordinate):
+        self.coordinates[axis_id] = coordinate
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -235,8 +235,15 @@ class VectorComponent(DataComponentImpl):
         schema_dict['localFrame'] = self.localFrame
 
         coord_dicts = []
-        for coord in self.coordinates:
-            coord_dicts.append(coord.datastructure_to_dict())
+        for axis, coord in self.coordinates.items():
+            coord_dicts.append({
+                'name': coord.name,
+                'type': coord.type.value,
+                'definition': coord.definition,
+                'axisID': axis,
+                'label': coord.label,
+                'uom': {'code': coord.uom}
+            })
 
         schema_dict['coordinates'] = coord_dicts
 
