@@ -1,4 +1,5 @@
 import uuid
+from abc import abstractmethod
 from dataclasses import dataclass, field
 from enum import Enum
 from numbers import Real
@@ -183,6 +184,9 @@ class DataComponentImpl(SweIdentifiableImpl):
     def get_uuid(self):
         return self.__uuid
 
+    @abstractmethod
+    def get_value(self):
+        raise NotImplementedError
 
 """ Basic Data Types:
     * Boolean (Unimplemented)

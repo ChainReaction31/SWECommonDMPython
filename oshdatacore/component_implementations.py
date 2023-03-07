@@ -21,6 +21,9 @@ class BooleanComponent(DataComponentImpl):
     value: bool = None
     type: SWEDataTypes = SWEDataTypes.BOOLEAN
 
+    def get_value(self):
+        return self.value
+
 
 @dataclass(kw_only=True)
 class TextComponent(DataComponentImpl):
@@ -47,6 +50,9 @@ class TextComponent(DataComponentImpl):
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
 
         return schema_dict
+
+    def get_value(self):
+        return self.value
 
 
 @dataclass(kw_only=True)
@@ -76,6 +82,9 @@ class CategoryComponent(DataComponentImpl):
     def add_allowed_value(self, allowed_value: str):
         self.constraint.add_allowed_value(allowed_value)
 
+    def get_value(self):
+        return self.value
+
 
 @dataclass(kw_only=True)
 class CountComponent(DataComponentImpl):
@@ -101,6 +110,9 @@ class CountComponent(DataComponentImpl):
 
     def add_allowed_value(self, allowed_value: int):
         self.constraint.add_allowed_value(allowed_value)
+
+    def get_value(self):
+        return self.value
 
 
 @dataclass(kw_only=True)
@@ -131,6 +143,9 @@ class QuantityComponent(DataComponentImpl):
     def add_allowed_value(self, allowed_value: int):
         self.constraint.add_allowed_value(allowed_value)
 
+    def get_value(self):
+        return self.value
+
 
 @dataclass(kw_only=True)
 class TimeComponent(DataComponentImpl):
@@ -158,6 +173,9 @@ class TimeComponent(DataComponentImpl):
             schema_dict['constraint'] = self.constraint.datastructure_to_dict()
 
         return schema_dict
+
+    def get_value(self):
+        return self.value
 
 
 # Record Components
@@ -210,6 +228,10 @@ class DataRecordComponent(DataComponentImpl):
                 field_map[f.get_uuid()] = f
         return field_map
 
+    def get_value(self):
+        return {name: value for name, value in zip([field.name for field in self.fields],
+                                                   [field.get_value() for field in self.fields])}
+
 
 class VectorComponent(DataComponentImpl):
     referenceFrame: str
@@ -249,6 +271,9 @@ class VectorComponent(DataComponentImpl):
 
         return schema_dict
 
+    def get_value(self):
+        return {axis: coord.get_value() for (axis, coord) in self.coordinates.items()}
+
 
 # Block Components
 class DataArrayComponent(DataComponentImpl):
@@ -268,6 +293,9 @@ class DataArrayComponent(DataComponentImpl):
 
     def add_value(self, value):
         self.values.append(value)
+
+    def get_value(self):
+        return self.values
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
