@@ -280,22 +280,35 @@ class DataArrayComponent(DataComponentImpl):
     type = SWEDataTypes.DATA_ARRAY
     element_type: DataComponentImpl
     element_count: CountComponent  # This should be able to be set to another output that is Type=COUNT
-    values: list[DataComponentImpl]
+    components: list[DataComponentImpl]
 
-    def __init__(self, name, label, definition, element_count, element_type, description=None):
+    def __init__(self, name, label, definition, description=None):
         self.name = name
         self.label = label
         self.definition = definition
         self.description = description
-        self.element_type = element_type
-        self.element_count = element_count
-        self.values = []
+        self.components = []
+        self.element_count = CountComponent(name='elementCount', label='Element Count',
+                                            definition='http://www.opengis.net/def/property/OGC/0/ElementCount',
+                                            value=0)
 
-    def add_value(self, value):
-        self.values.append(value)
+    def add_component(self, new_comp):
+        if self.element_count.value is 0:
+            self.components.append(new_comp)
+        elif isinstance(type(self.components[0]), new_comp):
+            self.components.append(new_comp)
+        else:
+            raise TypeError('Component type does not match existing components')
+
+    def set_component_template_and_size(self, size, comp_template):
+        self.element_type = comp_template
+        cls_type = getattr(comp_template, '__class__')
+        for i in range(size):
+            self.add_component(cls_type(name=f'{comp_template.name}-{i}', label=f'{comp_template.label} - {i}',
+                                        definition=comp_template.definition, description=comp_template.description))
 
     def get_value(self):
-        return self.values
+        return [value for value in map(lambda x: x.get_value(), self.components)]
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -313,3 +326,9 @@ class DataArrayComponent(DataComponentImpl):
         }
 
         return schema_dict
+
+    def get_uuid_value_map(self):
+        uuid_value_map = {}
+        for component in self.components:
+            uuid_value_map[component.get_uuid()] = component.get_value()
+        return uuid_value_map

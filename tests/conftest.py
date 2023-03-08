@@ -70,12 +70,10 @@ def test_comp_vector():
 @pytest.fixture
 def test_comp_data_array():
     comp = DataArrayComponent(name='test-data-array', label='Test DataArray', description='Test Description',
-                              definition='www.test.org/test/data-array',
-                              element_type=QuantityComponent(name='array-element',
-                                                             label='Array Element',
-                                                             definition='www.test.org/test/array-element-qty'),
-                              element_count=CountComponent(name='array-count',
-                                                           label='Array Count',
-                                                           definition='www.test.org/test/array-count',
-                                                           value=3))
+                              definition='www.test.org/test/data-array')
+    element_type = QuantityComponent(name='array-element', label='Array Element',
+                                     definition='www.test.org/test/array-element-qty')
+    element_count = CountComponent(name='array-count', label='Array Count', definition='www.test.org/test/array-count',
+                                   value=3)
+    comp.set_component_template_and_size(element_count.get_value(), element_type)
     return comp

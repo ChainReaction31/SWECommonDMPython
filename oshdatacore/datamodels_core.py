@@ -184,6 +184,9 @@ class DataComponentImpl(SweIdentifiableImpl):
     def get_uuid(self):
         return self.__uuid
 
+    def get_uuid_value_map(self):
+        return {self.__uuid: self.get_value()}
+
     @abstractmethod
     def get_value(self):
         raise NotImplementedError
