@@ -1,5 +1,7 @@
+import copy
 import time
 from dataclasses import dataclass, field
+from enum import Enum
 
 from oshdatacore.datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
 
@@ -19,10 +21,13 @@ class BooleanComponent(DataComponentImpl):
         type: SWEDataTypes.BOOLEAN
     """
     value: bool = None
-    type: SWEDataTypes = SWEDataTypes.BOOLEAN
+    swe_type: SWEDataTypes = SWEDataTypes.BOOLEAN
 
     def get_value(self):
         return self.value
+
+    def set_value(self, value):
+        self.value = value
 
 
 @dataclass(kw_only=True)
@@ -41,7 +46,7 @@ class TextComponent(DataComponentImpl):
     """
     constraint: AllowedTokens = None
     value: str = None
-    type: SWEDataTypes = SWEDataTypes.TEXT
+    swe_type: SWEDataTypes = SWEDataTypes.TEXT
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -53,6 +58,9 @@ class TextComponent(DataComponentImpl):
 
     def get_value(self):
         return self.value
+
+    def set_value(self, value):
+        self.value = value
 
 
 @dataclass(kw_only=True)
@@ -73,7 +81,7 @@ class CategoryComponent(DataComponentImpl):
     """
     codespace: dict = None
     constraint: AllowedTokens = None
-    type: SWEDataTypes = SWEDataTypes.CATEGORY
+    swe_type: SWEDataTypes = SWEDataTypes.CATEGORY
     value: str = None
 
     def set_allowed_values(self, allowed_values: AllowedTokens):
@@ -85,6 +93,9 @@ class CategoryComponent(DataComponentImpl):
     def get_value(self):
         return self.value
 
+    def set_value(self, value):
+        self.value = value
+
 
 @dataclass(kw_only=True)
 class CountComponent(DataComponentImpl):
@@ -93,7 +104,7 @@ class CountComponent(DataComponentImpl):
     representation
     """
 
-    type: SWEDataTypes = SWEDataTypes.COUNT
+    swe_type: SWEDataTypes = SWEDataTypes.COUNT
     constraint: AllowedValues = None
     value: int = None
 
@@ -114,6 +125,9 @@ class CountComponent(DataComponentImpl):
     def get_value(self):
         return self.value
 
+    def set_value(self, value):
+        self.value = value
+
 
 @dataclass(kw_only=True)
 class QuantityComponent(DataComponentImpl):
@@ -124,7 +138,7 @@ class QuantityComponent(DataComponentImpl):
     uom: str = None
     constraint: AllowedValues = None
     value: float = None
-    type: SWEDataTypes = SWEDataTypes.QUANTITY
+    swe_type: SWEDataTypes = SWEDataTypes.QUANTITY
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -146,6 +160,9 @@ class QuantityComponent(DataComponentImpl):
     def get_value(self):
         return self.value
 
+    def set_value(self, value):
+        self.value = value
+
 
 @dataclass(kw_only=True)
 class TimeComponent(DataComponentImpl):
@@ -161,7 +178,7 @@ class TimeComponent(DataComponentImpl):
     uom: str = 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
     constraint: AllowedValues = None
     value: float = None
-    type: SWEDataTypes = SWEDataTypes.TIME
+    swe_type: SWEDataTypes = SWEDataTypes.TIME
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -177,12 +194,15 @@ class TimeComponent(DataComponentImpl):
     def get_value(self):
         return self.value
 
+    def set_value(self, value):
+        self.value = value
+
 
 # Record Components
 
 @dataclass(kw_only=True)
 class DataRecordComponent(DataComponentImpl):
-    type: SWEDataTypes = SWEDataTypes.DATA_RECORD
+    swe_type: SWEDataTypes = SWEDataTypes.DATA_RECORD
     fields: list[DataComponentImpl] = field(default_factory=list)
 
     # def __init__(self, name, label, definition, description=None):
@@ -228,16 +248,30 @@ class DataRecordComponent(DataComponentImpl):
                 field_map[f.get_uuid()] = f
         return field_map
 
+    def name_to_field_map(self):
+        return {field.name: field for field in self.fields}
+
     def get_value(self):
         return {name: value for name, value in zip([field.name for field in self.fields],
                                                    [field.get_value() for field in self.fields])}
+
+    def set_value(self, value):
+        """
+
+        :param value: dictionary of field names to values
+        :return:
+        """
+        for k, v in value.items():
+            for field in self.fields:
+                if field.name == k:
+                    field.set_value(v)
 
 
 class VectorComponent(DataComponentImpl):
     referenceFrame: str
     localFrame: str
     coordinates: dict[DataComponentImpl]
-    type = SWEDataTypes.VECTOR
+    swe_type = SWEDataTypes.VECTOR
 
     def __init__(self, name, label, definition, reference_frame, local_frame, description=None):
         self.name = name
@@ -260,7 +294,7 @@ class VectorComponent(DataComponentImpl):
         for axis, coord in self.coordinates.items():
             coord_dicts.append({
                 'name': coord.name,
-                'type': coord.type.value,
+                'type': coord.swe_type.value,
                 'definition': coord.definition,
                 'axisID': axis,
                 'label': coord.label,
@@ -274,15 +308,27 @@ class VectorComponent(DataComponentImpl):
     def get_value(self):
         return {axis: coord.get_value() for (axis, coord) in self.coordinates.items()}
 
+    def set_value(self, value):
+        for axis, coord in self.coordinates.items():
+            coord.set_value(value[axis])
+
 
 # Block Components
 class DataArrayComponent(DataComponentImpl):
-    type = SWEDataTypes.DATA_ARRAY
+    swe_type = SWEDataTypes.DATA_ARRAY
     element_type: DataComponentImpl
     element_count: CountComponent  # This should be able to be set to another output that is Type=COUNT
     components: list[DataComponentImpl]
+    values: list
 
     def __init__(self, name, label, definition, description=None):
+        """
+
+        :param name:
+        :param label:
+        :param definition:
+        :param description:
+        """
         self.name = name
         self.label = label
         self.definition = definition
@@ -295,20 +341,45 @@ class DataArrayComponent(DataComponentImpl):
     def add_component(self, new_comp):
         if self.element_count.value is 0:
             self.components.append(new_comp)
-        elif isinstance(type(self.components[0]), new_comp):
+            self.element_count.value += 1
+        elif isinstance(new_comp, type(self.components[0])):
             self.components.append(new_comp)
+            self.element_count.value += 1
         else:
             raise TypeError('Component type does not match existing components')
 
     def set_component_template_and_size(self, size, comp_template):
+        """
+        Set the component template and size of the array.
+        WARNING: This can take a long time for large and complex templates/sizes.
+        :param size:
+        :param comp_template:
+        :return:
+        """
         self.element_type = comp_template
         cls_type = getattr(comp_template, '__class__')
         for i in range(size):
-            self.add_component(cls_type(name=f'{comp_template.name}-{i}', label=f'{comp_template.label} - {i}',
-                                        definition=comp_template.definition, description=comp_template.description))
+            # self.add_component(cls_type(name=f'{comp_template.name}-{i}', label=f'{comp_template.label} - {i}',
+            #                             definition=comp_template.definition, description=comp_template.description))
+            self.add_component(copy.deepcopy(comp_template))
 
     def get_value(self):
-        return [value for value in map(lambda x: x.get_value(), self.components)]
+        new_list = [value for value in map(lambda x: x.get_value(), self.components)]
+        return new_list
+
+    def set_value(self, values: list):
+        """
+
+        :param values:
+        :return:
+        """
+        the_type = type(self.element_type)
+        if type(self.element_type) in [DataRecordComponent, DataArrayComponent, VectorComponent]:
+            for i in range(len(values)):
+                self.components[i].set_value(values[i])
+        else:
+            for i in range(len(values)):
+                self.components[i].set_value(values[i])
 
     def datastructure_to_dict(self):
         schema_dict = super().datastructure_to_dict()
@@ -320,7 +391,7 @@ class DataArrayComponent(DataComponentImpl):
         }
         schema_dict['elementType'] = {
             'name': self.element_type.label,
-            'type': self.element_type.type.value,
+            'type': self.element_type.swe_type.value,
             'definition': self.element_type.definition,
             'description': self.element_type.description,
         }
@@ -328,7 +399,7 @@ class DataArrayComponent(DataComponentImpl):
         return schema_dict
 
     def get_uuid_value_map(self):
-        uuid_value_map = {}
-        for component in self.components:
-            uuid_value_map[component.get_uuid()] = component.get_value()
+        uuid_list = list(map(lambda comp: comp.get_uuid(), self.components))
+        value_list = list(map(lambda comp: comp.get_value(), self.components))
+        uuid_value_map = {uuid: value for (uuid, value) in zip(uuid_list, value_list)}
         return uuid_value_map

@@ -77,3 +77,49 @@ def test_comp_data_array():
                                    value=3)
     comp.set_component_template_and_size(element_count.get_value(), element_type)
     return comp
+
+
+@pytest.fixture
+def test_nested_comp_data_array_1():
+    comp = DataArrayComponent(name='test-data-array', label='Test DataArray', description='Test Description',
+                              definition='www.test.org/test/data-array')
+    element_type = DataRecordComponent(name='array-element', label='Array Element',
+                                       definition='www.test.org/test/array-element-dr')
+    element_type.add_field(TextComponent(name='f1', label='Test Field', definition='www.test.org/test/field'))
+    element_type.add_field(QuantityComponent(name='f2', label='Test Field', definition='www.test.org/test/field'))
+    element_count = CountComponent(name='array-count', label='Array Count', definition='www.test.org/test/array-count',
+                                   value=2)
+    comp.set_component_template_and_size(element_count.get_value(), element_type)
+    return comp
+
+
+@pytest.fixture
+def test_nested_comp_data_array_2():
+    comp = DataArrayComponent(name='test-data-array', label='Test DataArray', description='Test Description',
+                              definition='www.test.org/test/data-array')
+    element_type = VectorComponent(name='array-element', label='Array Element',
+                                   definition='www.test.org/test/array-element-v',
+                                   reference_frame='http://www.opengis.net/def/crs/EPSG/0/9705',
+                                   local_frame='#SENSOR_FRAME')
+    element_type.add_coord('Lat', QuantityComponent(name='lat', label='Test Lat', definition='www.test.org/test/lat'))
+    element_type.add_coord('Lon', QuantityComponent(name='lon', label='Test Lon', definition='www.test.org/test/lon'))
+    element_type.add_coord('Alt', QuantityComponent(name='alt', label='Test Alt', definition='www.test.org/test/alt'))
+
+    element_count = CountComponent(name='array-count', label='Array Count', definition='www.test.org/test/array-count',
+                                   value=2)
+    comp.set_component_template_and_size(element_count.get_value(), element_type)
+    return comp
+
+
+@pytest.fixture
+def test_nested_comp_data_array_3():
+    comp = DataArrayComponent(name='test-data-array', label='Test DataArray', description='Test Description',
+                              definition='www.test.org/test/data-array')
+    element_type = DataArrayComponent(name='array-element', label='Array Element',
+                                      definition='www.test.org/test/array-element-da')
+    element_type.set_component_template_and_size(1080, CountComponent(name='array-element', label='Array Element',
+                                                                   definition='www.test.org/test/array-element-text'))
+    element_count = CountComponent(name='array-count', label='Array Count', definition='www.test.org/test/array-count',
+                                   value=1920)
+    comp.set_component_template_and_size(element_count.get_value(), element_type)
+    return comp

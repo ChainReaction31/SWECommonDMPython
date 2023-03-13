@@ -158,10 +158,11 @@ class DataComponentImpl(SweIdentifiableImpl):
         process (i.e. when used to define the input or parameter of a service, process or sensor,
         but not when used to define the content of a dataset).
     """
-    type: SWEDataTypes = None
+    swe_type: SWEDataTypes = None
     """
         The “type” attribute is used to specify the component type. It is mandatory for all class that inherit from 
-        DataComponentImpl to use a default value for this attribute. 
+        DataComponentImpl to use a default value for this attribute. It is name swe_type here to avoid conflicts with
+        the python type() function.
     """
     # __uuid: UUID = uuid.uuid4()
     __uuid: UUID = field(default_factory=uuid.uuid4, init=False)
@@ -174,7 +175,7 @@ class DataComponentImpl(SweIdentifiableImpl):
     def datastructure_to_dict(self):
         schema_dict = dict([
             ('name', self.name),
-            ('type', self.type.value),
+            ('type', self.swe_type.value),
             ('label', self.label),
             ('definition', self.definition),
             ('description', self.description)
@@ -190,6 +191,11 @@ class DataComponentImpl(SweIdentifiableImpl):
     @abstractmethod
     def get_value(self):
         raise NotImplementedError
+
+    @abstractmethod
+    def set_value(self, value):
+        raise NotImplementedError
+
 
 """ Basic Data Types:
     * Boolean (Unimplemented)
