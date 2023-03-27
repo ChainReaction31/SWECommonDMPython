@@ -385,7 +385,7 @@ class DataArrayComponent(DataComponentImpl):
         schema_dict = super().datastructure_to_dict()
 
         schema_dict['elementCount'] = {
-            'type': self.element_count.type.value,
+            'type': self.element_count.swe_type.value,
             'definition': self.element_count.definition,
             'value': self.element_count.value,
         }

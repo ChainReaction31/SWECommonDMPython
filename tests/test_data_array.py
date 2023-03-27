@@ -41,4 +41,3 @@ def test_da_nested_3(test_nested_comp_data_array_3):
         values.append(inner_values)
 
     d_arr.set_value(values)
-    print(d_arr.get_value())
