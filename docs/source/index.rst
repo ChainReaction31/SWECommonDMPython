@@ -1,7 +1,7 @@
 .. PyOSHDataCore documentation master file, created by
-   sphinx-quickstart on Mon Mar 27 21:48:41 2023.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+sphinx-quickstart on Mon Mar 27 21:48:41 2023.
+You can adapt this file completely to your liking, but it should at least
+contain the root `toctree` directive.
 
 Welcome to PyOSHDataCore's documentation!
 =========================================
@@ -20,14 +20,14 @@ Indices and tables
 * :ref:`search`
 
 
-DataCore Components
-===================
-.. automodule:: oshdatacore.component_implementations
-   :members:
-
 DataCore Datamodels
 ===================
 .. automodule:: oshdatacore.datamodels_core
+   :members:
+
+DataCore Components
+===================
+.. automodule:: oshdatacore.component_implementations
    :members:
 
 DataCore Encoding
