@@ -2,9 +2,13 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+py-modules = ["oshdatacore"]
+packages = ["oshdatacore"]
+
 [project]
 name = "oshdatacore"
-version = "0.0.1-alpha.17"
+version = "0.0.1-alpha.19"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
