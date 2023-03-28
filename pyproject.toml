@@ -2,17 +2,21 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+py-modules = ["oshdatacore"]
+packages = ["oshdatacore"]
+
 [project]
 name = "oshdatacore"
-version = "0.0.1-alpha.15"
+version = "0.0.1-alpha.19"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
 description = """A SWE Common Data Model representation in Python"""
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 classifiers = [
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
     "Operating System :: OS Independent"
 ]

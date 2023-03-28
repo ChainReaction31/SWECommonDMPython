@@ -9,7 +9,7 @@ def test_bool_component(test_bool_comp):
     assert comp.label == 'Test Bool'
     assert comp.definition == 'www.test.org/test/bool'
     assert comp.description == 'Test Description'
-    assert comp.type == SWEDataTypes.BOOLEAN
+    assert comp.swe_type == SWEDataTypes.BOOLEAN
     assert comp.extension is None
     assert comp.value is None
 
@@ -30,7 +30,7 @@ def test_text_component(test_text_comp):
     assert comp.label == 'Test Text'
     assert comp.definition == 'www.test.org/test/text'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.TEXT.value
+    assert comp.swe_type.value == SWEDataTypes.TEXT.value
     assert comp.extension is None
     assert comp.value is None
 
@@ -41,7 +41,7 @@ def test_category_component(test_category_comp):
     assert comp.label == 'Test Category'
     assert comp.definition == 'www.test.org/test/category'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.CATEGORY.value
+    assert comp.swe_type.value == SWEDataTypes.CATEGORY.value
     assert comp.extension is None
     assert comp.value is None
 
@@ -52,7 +52,7 @@ def test_count_component(test_count_comp):
     assert comp.label == 'Test Count'
     assert comp.definition == 'www.test.org/test/count'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.COUNT.value
+    assert comp.swe_type.value == SWEDataTypes.COUNT.value
     assert comp.extension is None
     assert comp.value is None
 
@@ -63,19 +63,19 @@ def test_quantity_component(test_quantity_comp):
     assert comp.label == 'Test Quantity'
     assert comp.definition == 'www.test.org/test/quantity'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.QUANTITY.value
+    assert comp.swe_type.value == SWEDataTypes.QUANTITY.value
     assert comp.extension is None
     assert comp.value is None
 
 
 def test_time_component(test_time_comp):
     comp = test_time_comp
-    print(f'\nComp Type = {comp.type.value}\n')
+    print(f'\nComp Type = {comp.swe_type.value}\n')
     assert comp.name == 'test-time'
     assert comp.label == 'Test Time'
     assert comp.definition == 'http://www.opengis.net/def/property/OGC/0/SamplingTime'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.TIME.value
+    assert comp.swe_type.value == SWEDataTypes.TIME.value
     assert comp.extension is None
     assert comp.value is None
     assert comp.uom == 'http://www.opengis.net/def/uom/ISO-8601/0/Gregorian'
@@ -88,5 +88,5 @@ def test_datarecord_component(test_comp_datarecord):
     assert comp.label == 'Test DataRecord'
     assert comp.definition == 'www.test.org/test/datarecord'
     assert comp.description == 'Test Description'
-    assert comp.type.value == SWEDataTypes.DATA_RECORD.value
+    assert comp.swe_type.value == SWEDataTypes.DATA_RECORD.value
     assert comp.extension is None
