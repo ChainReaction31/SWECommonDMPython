@@ -15,7 +15,7 @@ sys.setrecursionlimit(1500)
 project = 'PyOSHDataCore'
 copyright = '2023, Ian Patterson'
 author = 'Ian Patterson'
-release = '0.0.1-a18'
+release = '0.0.1-alpha.20'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

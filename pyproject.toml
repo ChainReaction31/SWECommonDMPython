@@ -8,7 +8,7 @@ packages = ["oshdatacore"]
 
 [project]
 name = "oshdatacore"
-version = "0.0.1-alpha.19"
+version = "0.0.1-alpha.20"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]
