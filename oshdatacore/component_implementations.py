@@ -18,7 +18,7 @@ class BooleanComponent(DataComponentImpl):
         definition: A URI that identifies the ontological definition of the component
         description: A description of the component
         value: The latest value of the component
-        type: SWEDataTypes.BOOLEAN
+        swe_type: SWEDataTypes.BOOLEAN
     """
     value: bool = None
     swe_type: SWEDataTypes = SWEDataTypes.BOOLEAN
@@ -42,7 +42,7 @@ class TextComponent(DataComponentImpl):
         description: A description of the component
         constraint: limits the set of valid values
         value: The latest value of the component
-        type: SWEDataTypes.TEXT
+        swe_type: SWEDataTypes.TEXT
     """
     constraint: AllowedTokens = None
     value: str = None
@@ -75,9 +75,10 @@ class CategoryComponent(DataComponentImpl):
         definition: A URI that identifies the ontological definition of the component
         description: A description of the component
         codespace: dictionary listing and defining all possible values of the component. It is expected that the
-            dictionary be referenced rather than included inline
+        dictionary be referenced rather than included inline
         constraint: limits the set of valid values
         value: The latest value of the component
+        swe_type: SWEDataTypes.CATEGORY
     """
     codespace: dict = None
     constraint: AllowedTokens = None
@@ -323,11 +324,12 @@ class DataArrayComponent(DataComponentImpl):
 
     def __init__(self, name, label, definition, description=None):
         """
-
-        :param name:
-        :param label:
-        :param definition:
-        :param description:
+        Returns a new DataArrayComponent that is not yet ready for use.  The element_type and element_count must be set
+        separately.
+        :param name: machine name of the component
+        :param label: human-readable name of the component
+        :param definition: URI of the definition of the component
+        :param description: brief description of the component
         """
         self.name = name
         self.label = label
@@ -357,10 +359,9 @@ class DataArrayComponent(DataComponentImpl):
         :return:
         """
         self.element_type = comp_template
-        cls_type = getattr(comp_template, '__class__')
         for i in range(size):
-            # self.add_component(cls_type(name=f'{comp_template.name}-{i}', label=f'{comp_template.label} - {i}',
-            #                             definition=comp_template.definition, description=comp_template.description))
+            # TODO: Instead of copying the template, consider spoofing the output to appear as the template dictates,
+            #  but use a basic datastructure
             self.add_component(copy.deepcopy(comp_template))
 
     def get_value(self):
@@ -369,11 +370,10 @@ class DataArrayComponent(DataComponentImpl):
 
     def set_value(self, values: list):
         """
-
+        Set the value of the component.  This will set the value of each component in the array. This datastructure can
+        be complex if the DataArray contains nested composite types (eq. DataRecords, DataArrays, or Vectors).
         :param values:
-        :return:
         """
-        the_type = type(self.element_type)
         if type(self.element_type) in [DataRecordComponent, DataArrayComponent, VectorComponent]:
             for i in range(len(values)):
                 self.components[i].set_value(values[i])

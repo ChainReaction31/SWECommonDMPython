@@ -1,7 +1,4 @@
 # TODO
 
-* Implement DataStructures
-* Test Data structures
-  * Test returning the dictionaries in a way that the ConnectedSystems Schema requires
-* Add build system
-  * Config file
+* Improve performance of nested components, DataArrays in particular
+* Provide more example use cases for documentation
