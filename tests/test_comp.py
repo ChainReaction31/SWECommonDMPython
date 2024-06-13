@@ -1,6 +1,6 @@
 import time
 
-from oshdatacore.datamodels_core import SWEDataTypes
+from swe_common_data_models_python import SWEDataTypes
 
 
 def test_bool_component(test_bool_comp):

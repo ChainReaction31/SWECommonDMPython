@@ -1,9 +1,8 @@
 import copy
 import time
 from dataclasses import dataclass, field
-from enum import Enum
 
-from oshdatacore.datamodels_core import DataComponentImpl, SWEDataTypes, AllowedTokens, AllowedValues
+from swe_common_data_models_python import AllowedTokens, AllowedValues, DataComponentImpl, SWEDataTypes
 
 
 @dataclass(kw_only=True)

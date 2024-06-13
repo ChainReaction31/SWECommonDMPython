@@ -1,3 +1,10 @@
+#   ==============================================================================
+#   Copyright (c) 2024 Botts Innovative Research, Inc.
+#   Date:  2024/6/13
+#   Author:  Ian Patterson
+#   Contact Email:  ian@botts-inc.com
+#   ==============================================================================
+
 import uuid
 from abc import abstractmethod
 from dataclasses import dataclass, field
@@ -142,7 +149,7 @@ class DataComponentImpl(SweIdentifiableImpl):
         context) that the data component represents by using a scoped name. It should map to a
         controlled term defined in an (web accessible) dictionary, registry or ontology. Such
         terms provide the formal textual definition agreed upon by one or more communities,
-        eventually illustrated by pictures and diagrams as well as additional semantic information
+        eventually illustrated by pictures and/or diagrams as well as additional semantic information
         such as relationships to units and other concepts, ontological mappings, etc.
     """
     optional: bool = False
@@ -216,3 +223,4 @@ class DataComponentImpl(SweIdentifiableImpl):
     * Matrix (unimplemented)
     * DataStream (unimplemented)
 """
+
