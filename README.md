@@ -1,4 +1,4 @@
-# OSH Data Core
+# SWE Common Data Model Python
 
 This package includes a selection of commonly used datamodels and encodings listed in the SWE Common Data Model 2.0 (OGC 08-094r1)
 http://www.opengis.net/doc/IS/SWE/2.0

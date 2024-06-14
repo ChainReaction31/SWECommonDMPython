@@ -8,7 +8,7 @@ packages = ["swecommondm"]
 
 [project]
 name = "swecommondm"
-version = "0.0.1-alpha.20"
+version = "0.0.1-alpha"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
 ]

@@ -2,7 +2,7 @@ import copy
 import time
 from dataclasses import dataclass, field
 
-from swe_common_data_models_python import AllowedTokens, AllowedValues, DataComponentImpl, SWEDataTypes
+from swecommondm import AllowedTokens, AllowedValues, DataComponentImpl, SWEDataTypes
 
 
 @dataclass(kw_only=True)

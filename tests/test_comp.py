@@ -1,6 +1,6 @@
 import time
 
-from swe_common_data_models_python import SWEDataTypes
+from swecommondm import SWEDataTypes
 
 
 def test_bool_component(test_bool_comp):

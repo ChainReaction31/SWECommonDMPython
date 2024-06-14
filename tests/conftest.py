@@ -1,6 +1,6 @@
 import pytest
 
-from swe_common_data_models_python.component_implementations import BooleanComponent, TextComponent, CategoryComponent, CountComponent, \
+from swecommondm.component_implementations import BooleanComponent, TextComponent, CategoryComponent, CountComponent, \
     QuantityComponent, TimeComponent, DataRecordComponent, VectorComponent, DataArrayComponent
 
 
