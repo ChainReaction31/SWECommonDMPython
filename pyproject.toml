@@ -3,11 +3,11 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-py-modules = ["oshdatacore"]
-packages = ["oshdatacore"]
+py-modules = ["swecommondm"]
+packages = ["swecommondm"]
 
 [project]
-name = "oshdatacore"
+name = "swecommondm"
 version = "0.0.1-alpha.20"
 authors = [
     { name = "Ian Patterson", email = "ian@botts-inc.com" }
